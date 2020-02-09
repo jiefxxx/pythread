@@ -27,6 +27,7 @@ class ThreadReturn:
     async def async_wait(self):
         await self.asyncEvent.wait()
         self.asyncEvent.clear()
+        return self.get_value()
 
     def join(self):
         with self.completeEvent:
@@ -48,6 +49,8 @@ class ThreadReturn:
     def set_error(self, error):
         self.error = error
         self.completed = True
+        if self.asyncEvent:
+            self.asyncEvent.set()
         try:
             self.completeEvent.notify_all()
         except RuntimeError:
@@ -68,6 +71,6 @@ class ThreadReturn:
             self.join()
         if self.gen:
             return self._get_generator()
-        if self.error is not None:
+        if self.error:
             raise self.error
         return self.value

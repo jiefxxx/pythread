@@ -25,9 +25,9 @@ class Thread(threading.Thread):
                 ret.set_value(value)
             return value
         except Exception as e:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stdout)
-            print("exception in thread" + self.getName() + " :")
+            #exc_type, exc_value, exc_traceback = sys.exc_info()
+            #traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stdout)
+            debug_print(self, "exception in thread", self.getName(), " :")
             if ret:
                 ret.set_error(e)
 
